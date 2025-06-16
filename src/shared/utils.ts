@@ -1,8 +1,9 @@
 import { ApiResponse, ErrorResponse } from './types';
+import { APIGatewayProxyResult } from 'aws-lambda';
 
-export const createSuccessResponse = <T>(data: T, statusCode = 200): ApiResponse<T> => ({
+export const createSuccessResponse = <T>(data: T, statusCode = 200): APIGatewayProxyResult => ({
   statusCode,
-  body: data,
+  body: JSON.stringify(data),
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -10,12 +11,12 @@ export const createSuccessResponse = <T>(data: T, statusCode = 200): ApiResponse
   },
 });
 
-export const createErrorResponse = (message: string, code: string, statusCode = 400): ApiResponse<ErrorResponse> => ({
+export const createErrorResponse = (message: string, code: string, statusCode = 400): APIGatewayProxyResult => ({
   statusCode,
-  body: {
+  body: JSON.stringify({
     message,
     code,
-  },
+  }),
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
